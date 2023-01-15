@@ -1,0 +1,188 @@
+﻿@model TaskManager.Models.Project
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-info @TempData["messageType"]"> @TempData["message"] </div>
+}
+
+<div class="d-flex justify-content-between">
+
+    <a class="btn btn-info" href="/Projects/Index/">Show all projects</a>
+
+    <a class="btn btn-info" href="/Projects/New">New project</a>
+
+</div>
+
+<br />
+
+<div class="card">
+
+    <div class="card-body">
+
+        <h3 class="card-title alert-info py-3 px-3 rounded-2">@Model.ProjectName</h3>
+
+        <div class="card-text">@Model.ProjectDescription</div>
+        <div class="d-flex justify-content-between flex-row mt-5">
+            @if (Model.User is not null)
+            {
+                <div><i class="bi bi-globe"></i>@Model.User.UserName</div>
+            }
+
+        </div>
+
+    </div>
+
+
+
+    <div class="d-flex flex-row justify-content-center">
+        @if (Model.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+        {
+            <a class="btn btn-info m-2" href="/Projects/Edit/@Model.ProjectId">Edit project info</a>
+            <form method="post" action="/Projects/Delete/@Model.ProjectId">
+
+                <button class="btn btn-danger m-2" type="submit"><i class="bi bi-trash"></i></button>
+
+            </form>
+        }
+        <a class="btn btn-info m-2" href="/Projects/Users/@Model.ProjectId">Users</a>
+
+    </div>
+
+</div>
+
+<br />
+<br />
+
+
+@* Afisare task uri impreuna cu butoanele de editare/stergere/afisare *@
+@if (Model.Tasks is not null)
+{
+    @foreach (var task in Model.Tasks)
+    {
+        <div class="container taskuri">
+            <div class="row ">
+                <div class="col-md-2"></div>
+
+                <div class="col-md-9">
+
+                    <div>
+
+                        <p>@task.TaskTitle</p>
+                        <small>@task.TaskStatus</small><br />
+                        @if (task.User is not null)
+                        {
+                            <div class="hide id_user_task">
+                                @*@task.UserId*@
+                                @task.User.UserName
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="hide id_user_task">
+                            </div>
+                        }
+                    </div>
+                    <br>
+
+                    <div class="d-flex">
+                        @if (Model.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                        {
+                            <div>
+
+                                <a class="btn btn-dark" href="/Tasks/Edit/@task.TaskId"><i class="bi bi-pencil-square"></i>Edit task</a>
+
+                            </div>
+
+                            <div>
+
+                                <form method="post" action="/Tasks/Delete/@task.TaskId">
+
+                                    <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Task</button>
+
+                                </form>
+
+                            </div>
+                        }
+                        <div>
+                            <a class="btn btn-info" href="/Tasks/Show/@task.TaskId">Show Task</a>
+                        </div>
+                        <br />
+                    </div>
+
+                    <br />
+
+                </div>
+
+                <div class="col-md-1"></div>
+
+            </div>
+
+        </div>
+    }
+}
+
+@* Afisarea formularului in care se poate adauga un task *@
+@if (Model.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+{
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-6">
+
+                <div class="card">
+
+                    <form method="post" action="/Projects/Show/@Model.ProjectId">
+
+                        <div class="card-body">
+
+                            <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+
+                            <input type="hidden" name="TaskStatus" value="Not started" />
+
+                            <label>Task info</label>
+                            <br />
+                            <lable>Task title</lable>
+                            <textarea class="form-control" name="TaskTitle"></textarea>
+
+                            @Html.ValidationMessage("TaskTitle", null, new { @class = "text-danger"})
+
+                            <br /><br />
+                            <label>Task description</label>
+                            <textarea class="form-control" name="TaskDescription"></textarea>
+                            <br /><br />
+                            
+                            @*<label>Task Status</label>
+                            <textarea class="form-control" name="TaskStatus"></textarea>*@
+                            <br /><br />
+                            <label>Start date</label>
+                            <input type="date" name="TaskDateStart" />
+                            <br />
+                            <br />
+                            <br />
+                            <label>End date</label>
+                            <input type="date" name="TaskDateEnd" />
+                            <br /><br />
+                            @Html.ValidationSummary(false, "", new { @class = "textdanger" })
+
+
+                            <button class="btn btn-info " type="submit">Add a task</button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-2"></div>
+
+        </div>
+
+    </div>
+}

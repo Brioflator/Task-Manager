@@ -1,0 +1,66 @@
+﻿@model TaskManager.Models.Task
+
+<h2 class="text-center mt-5">Edit task</h2>
+<br />
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-info p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+<div>
+    <h3>@ViewBag.CurrentStatus</h3>
+</div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            @using (Html.BeginForm(actionName: "Edit", controllerName: "Tasks",
+            method: FormMethod.Post,
+            routeValues: new { id = Model.TaskId }))
+            {
+
+
+
+                @Html.Label("TaskTitle", "Task Title")
+                <br />
+                @Html.EditorFor(m => m.TaskTitle, new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.ValidationMessageFor(m => m.TaskTitle, null, new { @class = "text-danger" })
+                <br />
+                
+                <input type="hidden" name="TaskStatus" value=@Model.TaskStatus />
+
+                @Html.ValidationMessageFor(m => m.TaskTitle, null, new { @class = "text-danger" })
+                <br />
+
+                @Html.Label("TaskDescription", "Task Description")
+                <br />
+                @Html.Editor("TaskDescription", new { htmlAttributes = new { @class = "form-control" } })
+
+                <br />
+                <br />
+                <input type="hidden" name="Status" value=@Model.TaskStatus />
+
+                @Html.Label("TaskDateStart", "Task Start Date")
+                <br />
+                @Html.Editor("TaskDateStart", new { htmlAttributes = new { @class = "form-control" } })
+
+                <br />
+                <br />
+
+
+                @Html.Label("TaskDateEnd", "Task End Date")
+                <br />
+                @Html.Editor("TaskDateEnd", new { htmlAttributes = new { @class = "form-control" } })
+
+                <br />
+                <br />
+                @Html.ValidationSummary()
+                ;
+                <button class="btn btn-sm btn-info" type="submit">Update task</button>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+

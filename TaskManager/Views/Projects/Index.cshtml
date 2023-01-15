@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Projects";
+}
+
+
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-info p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+
+
+
+
+
+
+
+
+@if (ViewBag.Projects is int)
+{
+    <h3 class="display-4 text-center">There are no projects to display. Would you like to add one?</h3>
+    <br />
+    <div class="d-flex justify-content-center">
+        <a class="btn" href="/Projects/New">Add a project!</a>
+    </div>
+
+}
+else
+{
+
+    <div class="container">
+        <div class="row justify-content-between">
+
+
+            <nav class=" menu-navbar navbar-expand-lg  col-2">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+
+            <div class="container projects-container col">
+                <div class="row">
+                    @foreach (TaskManager.Models.Project project in ViewBag.Projects)
+                    {
+
+                        <a class=" card justify-content-center col-sm-6 col-md-4 col-lg-3 " href="/Projects/Show/@project.ProjectId">
+
+
+
+                            <div class="card-body justify-content-center">
+                                <i class="bi bi-journal-bookmark-fill"></i>
+
+                                <div class="prog-title">@project.ProjectName</div>
+
+                                @* <div class="card-text">@project.Description</div>*@
+                                @*<div class="d-flex justify-content-between flex-row mt-5">
+                        @if (project.User is not null)
+                        {
+                        <div><i class="bi bi-person"></i>@project.User.UserName</div>
+                        }
+                        </div>*@
+                            </div>
+
+
+
+
+
+                        </a>
+                    }
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+}

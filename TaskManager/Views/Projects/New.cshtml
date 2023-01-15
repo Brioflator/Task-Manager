@@ -1,0 +1,33 @@
+﻿@model TaskManager.Models.Project
+@{
+    ViewBag.Title = "Create A New Project";
+}
+
+
+<h2 class="text-center mt-5">Add a project</h2>
+<br />
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-6 offset-3">
+            @using (Html.BeginForm(actionName: "New", controllerName: "Projects", method: FormMethod.Post))
+            {
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                @Html.Label("ProjectName", "Project Name")
+                <br />
+                @Html.TextBox("ProjectName", null, new { @class = "form-control" })
+                <br />
+                @Html.ValidationMessageFor(m => m.ProjectName, "", new{@class = "text-danger"})
+                <br />
+                @Html.Label("ProjectDescription", "Project Description")
+                <br />
+                @Html.TextArea("ProjectDescription", null, new { @class = "form-control" })
+                <br />
+               
+                <button class="btn" type="submit">
+                    Create
+                </button>
+            }
+        </div>
+    </div>
+</div>

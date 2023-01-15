@@ -1,0 +1,31 @@
+﻿@model TaskManager.Models.Comment
+
+<h2 class="text-center mt-5">Edit Comment</h2>
+<br />
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            @using (Html.BeginForm(actionName: "Edit", controllerName: "Comments",
+            method: FormMethod.Post,
+            routeValues: new { id = Model.CommentId }))
+            {
+
+
+
+                @Html.Label("Content", "Edit comment")
+                <br />
+                @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
+                <br />
+                @Html.EditorFor(m => m.Content, new { htmlAttributes = new { @class = "form-control" } })
+
+                <br />
+
+                <button class="btn btn-sm btn-info" type="submit">Update content</button>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+

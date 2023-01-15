@@ -1,0 +1,31 @@
+﻿@model TaskManager.Models.Team
+
+@{
+    ViewBag.Title = "Edit team";
+}
+
+<style>
+    body {
+        background-image: none;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+<form method="post" action="/Teams/Posts/@Model.TeamId/Put">
+
+
+    @Html.Label("TeamNameEdit", "Team name")
+    <br />
+    @Html.EditorFor(t => t.TeamName)
+    @Html.ValidationMessageFor(model => model.TeamName, null, new { @class = "text-danger" })
+    <br /><br />
+    @Html.Label("TeamUsersId", "Select users")
+    @Html.ListBox("TeamUsersId", new SelectList(Model.TUsers, "Value", "Text"), new { @class = "form-control" })
+    @Html.ValidationMessage("TeamUsersId", "", new { @class = "text-danger" })
+    <br /> <br />
+
+    <button class="btn btn-primary" type="submit">Modify</button>
+
+</form>

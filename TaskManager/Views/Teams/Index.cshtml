@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Your teams";
+}
+
+<style>
+    body {
+        background-image: none;
+    }
+</style>
+
+@if (ViewBag.isAdmin == 1)
+{
+    <ol class="breadcrumb">
+        <h2>All teams</h2>
+    </ol>
+
+}
+else
+{
+    <ol class="breadcrumb">
+        <h2>@ViewBag.Title</h2>
+    </ol>
+
+}
+
+<h3>@ViewBag.message</h3>
+@if (ViewBag.message != null)
+{
+    <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @ViewBag.message
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@foreach (var team in ViewBag.Teams)
+{
+    if (team.TeamUsers.Contains(ViewBag.User) || ViewBag.isAdmin == 1)
+    {
+        <div class="panel panel-info">
+            <div class="panel-heading" style="background-color: #96CDFF;"><b>@team.TeamName</b></div>
+            <div class="panel-footer">
+                <a class=" btn btn-sm btn btn-primary" href="/Teams/Show/@team.TeamId">Show team</a>
+            </div>
+        </div>
+        <br />
+    }
+}
+<br />
+<a class="btn btn-primary" style="background-color:white; color: #2e6da4" href="/Teams/New">New team</a>

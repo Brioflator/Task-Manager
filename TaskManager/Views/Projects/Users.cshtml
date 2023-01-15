@@ -1,0 +1,96 @@
+﻿@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
+
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+<br />
+
+<div class="d-flex justify-content-center">
+
+    <a class="btn btn-outline-success" href="/Projects/Show/@ViewBag.Project.ProjectId">Back to project</a>
+
+</div>
+
+<h2 class="text-center mt-5">Users in this project:</h2>
+<br />
+
+@foreach (var user in ViewBag.Users)
+{
+    <div class="card">
+
+
+        <div class="card-body">
+            @if (user.UserId == ViewBag.Project.UserId)
+            {
+                <h3 class="card-title alert-success py-3 px-3 rounded-2">@user.User.Email</h3>
+                <small>Owner</small>
+            }
+            else
+            {
+
+                <h3 class="card-title alert-info py-3 px-3 rounded-2">@user.User.Email</h3>
+                @if (_userManager.GetUserId(User) == ViewBag.Project.UserId || User.IsInRole("Admin")
+               || _userManager.GetUserId(User) == user.UserId)
+                {
+                    <form method="post" action="/Projects/UserDelete/@user.Id/@user.UserId/@user.ProjectId">
+                        <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Remove User</button>
+                    </form>
+                }
+            }
+            <div class="card-text">rol</div>
+
+        </div>
+
+
+
+    </div>
+
+    <br />
+    <br />
+}
+
+@if (_userManager.GetUserId(User) == ViewBag.Project.UserId || User.IsInRole("Admin"))
+{
+    <h3>Search </h3>
+
+    <form method="GET">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@ViewBag.SearchString">
+            <button class="btn btn-outline-success"
+                type="submit">
+                Search
+            </button>
+        </div>
+    </form>
+
+
+    @foreach (TaskManager.Models.ApplicationUser user in ViewBag.AllUsers)
+    {
+        <div class="card">
+
+
+            <div class="card-body">
+
+                <h3 class="card-title alert-info py-3 px-3 rounded-2">@user.Email</h3>
+
+                <div class="card-text">rol</div>
+                <form method="post" action="/Projects/Users/@ViewBag.Project.ProjectId">
+                    <input type="hidden" name="UserId" value="@user.Id" />
+                    <input type="hidden" name="ProjectId" value="@ViewBag.Project.ProjectId" />
+                    <button type="submit">Adauga</button>
+                </form>
+
+            </div>
+
+
+
+        </div>
+
+        <br />
+        <br />
+    }
+
+}

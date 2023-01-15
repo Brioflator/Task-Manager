@@ -1,0 +1,80 @@
+﻿@model TaskManager.Models.Team
+
+@{
+    ViewBag.Title = Model.TeamName;
+}
+
+<style>
+    body {
+        background-image: none;
+    }
+</style>
+
+<h2>
+    <span class="pull-left">@ViewBag.Title</span>
+    @if (ViewBag.isOrg == 1 || ViewBag.isAdmin == 1)
+    {
+        <form method="post" action="/Teams/Posts/@Model.TeamId/Delete">
+
+            <button class="btn btn-danger pull-right" type="submit">Delete</button>
+        </form>
+    }
+    <br />
+</h2>
+<i class="glyphicon glyphicon-user"></i> <i> Created by @ViewBag.Organizer.UserName</i>
+<br />
+@if (ViewBag.isOrg == 1 || ViewBag.isAdmin == 1)
+{
+    <a class="btn btn-primary" href="/Teams/Edit/@Model.TeamId">Edit</a>
+    <br />
+    <br />
+}
+
+<hr />
+<h4> Users </h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>User</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int ct = 1;
+            foreach (var user in Model.TeamUsers)
+            {
+                if (ct % 2 == 0)
+                {
+                    <tr>
+                        <th scope="row">@ct</th>
+                        <td>@user.UserName</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr style="background-color: #f0f0f0;">
+                        <th scope="row">@ct</th>
+                        <td>@user.UserName</td>
+                    </tr>
+                }
+                ct = ct + 1;
+            }
+        }
+    </tbody>
+</table>
+<hr />
+<h4>Projects</h4>
+@foreach (var project in ViewBag.Projects)
+{
+    <div class="panel panel-info">
+        <div class="panel-heading" style="background-color: #96CDFF;"><b>@project.ProjectName</b></div>
+        <div class="panel-footer">
+            <a class=" btn btn-sm btn btn-primary" href="/Projects/Show/@project.ProjectId">Show project</a>
+        </div>
+    </div>
+    <br />
+}
+<hr />
+<a class="btn btn-primary" style="background-color:white; color: #2e6da4" href="/Teams/Index/">Show all teams</a>
+

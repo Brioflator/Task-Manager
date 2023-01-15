@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
+
+<ul class="navbar-nav">
+
+
+
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Admin"))
+        {
+            
+            <li class="nav-item">
+                <a class="nav-link " asp-area="" asp-controller="Users" asp-action="Index" title="Manage">All users</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link " asp-area="" asp-controller="Projects" asp-action="IndexAdmin" title="Manage">All projects</a>
+            </li>
+        }
+
+
+        <li class="nav-item">
+            <a class="nav-link " asp-area="" asp-controller="Projects" asp-action="Index" title="Manage">My projects</a>
+        </li>
+
+
+        <li class="dropdown">
+            <button class="nav-link" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                
+
+                    <img id="profilePicture" height="40px" alt="profile" src="~/Assets/pfp.svg" />
+
+                
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end bg-dark " aria-labelledby="dropdownMenu2">
+                <li>
+                    <a class="dropdown-item text-info" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">My profile</a>
+                </li>
+                <li>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="dropdown-item text-info">Log-out</button>
+                    </form>
+                </li>
+                <li>
+                    @using (Html.BeginForm(actionName: "Delete", controllerName: "Users", method: FormMethod.Post, routeValues: new { id = _userManager.GetUserId(User) }))
+                    {
+
+                        <button type="submit" class="dropdown-item text-info">Delete</button>
+
+                    }
+                </li>
+            </ul>
+        </li>
+
+
+
+
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link " asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>

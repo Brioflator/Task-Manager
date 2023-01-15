@@ -1,0 +1,53 @@
+﻿@model TaskManager.Models.ApplicationUser
+
+
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Users", method: FormMethod.Post, routeValues: new { id = @Model.Id }))
+{
+
+    @Html.Label("UserName", "User Name")
+
+    <br />
+
+    @Html.EditorFor(m => m.UserName)
+
+    <br />
+    <br />
+
+    @Html.Label("Email", "Email utilizator")
+
+    <br />
+
+    @Html.EditorFor(m => m.Email)
+
+    <br />
+        <br />
+
+    @Html.Label("LastName", "Last Name")
+
+    <br />
+
+    @Html.EditorFor(m => m.LastName)
+
+    <br />
+    <br />
+    
+    @Html.Label("FirstName", "First Name")
+
+    <br />
+
+    @Html.EditorFor(m => m.FirstName)
+
+    <br />
+    <br />
+
+    <label>Selectati rolul</label>
+    @Html.DropDownList("newRole", new SelectList(Model.AllRoles, "Value", "Text", ViewBag.UserRole), null, new { @class = "form-control" })
+
+    <br />
+    
+
+    <button class="btn btn-sm btn-info" type="submit">Save changes</button>
+
+
+}

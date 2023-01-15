@@ -1,0 +1,27 @@
+﻿@model TaskManager.Models.Team
+
+@{
+    ViewBag.Title = "New team";
+}
+
+<style>
+    body {
+        background-image: none;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+<form method="post" action="/Teams/New">
+    @Html.Label("TeamName", "Team name")
+    <br />
+    @Html.TextBox("TeamName", null, new { })
+    @Html.ValidationMessageFor(model => model.TeamName, null, new { @class = "text-danger" })
+    <br /> <br />
+    @Html.Label("TeamUsersId", "Select users")
+    @Html.ListBox("TeamUsersId", new SelectList(Model.TUsers, "Value", "Text"), new { @class = "form-control" })
+    @Html.ValidationMessage("TeamUsersId", "", new { @class = "text-danger" })
+    <br /><br />
+    <button class="btn btn-primary" type="submit">Add</button>
+</form>
