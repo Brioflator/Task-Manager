@@ -1,5 +1,5 @@
 <h2 style = "text-indent: 50px;"> 
-<span style="color: #ed7966">Taskify</span> este o platforma intuitiva si minimalista de task management care te va ajuta sa devii mai productiv! 
+<span style="color: #ed7966">TaskManager</span> este o platforma intuitiva si minimalista de task management care te va ajuta sa devii mai productiv! 
 </h2>
 
 
